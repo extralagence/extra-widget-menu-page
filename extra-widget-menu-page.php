@@ -4,7 +4,7 @@
  *
  * The WordPress Widget Boilerplate is an organized, maintainable boilerplate for building widgets using WordPress best practices.
  *
- * @package   Extra_Widget_Latest_Comments
+ * @package   Extra_Widget_Menu_Page
  * @author    Vincent Saïsset <vs@extralagence.com>
  * @license   GPL-2.0+
  * @link      www.extralagence.com
@@ -123,6 +123,8 @@ class Extra_Widget_Menu_Page extends WP_Widget {
 
 		extract( $args, EXTR_SKIP );
 
+		$show_widget = true;
+
 		$widget_string = $before_widget;
 		ob_start();
 		include( plugin_dir_path( __FILE__ ) . 'views/widget.php' );
@@ -134,8 +136,9 @@ class Extra_Widget_Menu_Page extends WP_Widget {
 
 		wp_cache_set( $this->get_widget_slug(), $cache, 'widget' );
 
-		print $widget_string;
-
+		if ($show_widget) {
+			print $widget_string;
+		}
 	} // end widget
 	
 	
@@ -150,8 +153,7 @@ class Extra_Widget_Menu_Page extends WP_Widget {
 	 * @param array old_instance The previous instance of values before the update.
 	 */
 	public function update($new_instance, $old_instance) {
-
-		$old_instance['title'] = strip_tags($new_instance['title']);
+		$old_instance['show_root'] = strip_tags($new_instance['show_root']);
 
 		return $old_instance;
 
@@ -167,7 +169,7 @@ class Extra_Widget_Menu_Page extends WP_Widget {
 		$instance = wp_parse_args(
 			(array) $instance,
 			array(
-				'title' => '',
+				'show_root' => 1,
 			)
 		);
 
